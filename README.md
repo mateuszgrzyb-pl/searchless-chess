@@ -1,4 +1,4 @@
-# ♟️ Searchless Chess: Grandmaster-Level Chess Through Pure Neural Intuition
+# ♟️ Searchless Chess: Master-Level Chess Through Pure Neural Intuition
 
 A neural network that plays chess without search algorithms—relying purely on learned intuition from millions of positions evaluated by Stockfish.
 
