@@ -1,0 +1,107 @@
+# =============================================================================
+# DATA DOWNLOAD & SOURCES
+# =============================================================================
+data:
+  source:
+    base_url: "https://huggingface.co/datasets/Lichess/chess-position-evaluations/resolve/main/data"
+    train_files: 16
+    # TODO: Później dorzucić dodać val/test files później
+  
+  # Katalogi do zapisu danych
+  paths:
+  stage_0_raw: "data/stage_0_raw"           # surowe parquety
+  stage_1_filtered: "data/stage_1_filtered" # po filtrowaniu
+  stage_2_encoded: "data/stage_2_encoded"   # gotowe tensory
+  samples: "data/samples"                   # próbki do debugowania
+  
+  # Kolumny do wczytania z parquet
+  columns: ["fen", "depth", "knodes", "cp", "mate"]
+
+# =============================================================================
+# DATA FILTERING & PREPROCESSING
+# =============================================================================
+preprocessing:
+  # Filtrowanie pozycji
+  filters:
+    allowed_pieces: "pnbrqk"  # wszystkie figury (p=pawn, n=knight, b=bishop, r=rook, q=queen, k=king)
+    white_only: false         # czy tylko pozycje białych? (false = obie strony)
+    min_depth: null           # TODO: na razie null; potrzebna EDA
+    min_knodes: null          # j.w.
+  
+  # Deduplikacja FEN
+  deduplication:
+    enabled: true
+    sort_by: ["fen", "depth", "knodes"]  # sortowanie przed deduplikacją
+    sort_order: [true, false, false]     # ASC dla fen, DESC dla depth/knodes
+    keep: "first"  # zachowaj najgłębszą analizę
+  
+  # Konwersja mate → cp
+  mate_conversion:
+    max_cp_no_mate: 20000
+    mate_margin: 7000
+    step: 100
+  
+  # Clipping wartości cp (opcjonalnie)
+  cp_clipping:
+    enabled: false  # TODO: na razie wyłączone; po analizie zdecydować czy włączyć
+    min_cp: -20000
+    max_cp: 20000
+  
+  # Encoding FEN → tensor
+  encoding:
+    always_white_perspective: true  # mirror board dla czarnych
+    dtype: "uint8"  # tensor dtype
+    output_shape: [8, 8, 12]  # (rows, cols, channels)
+
+# =============================================================================
+# TRAIN/VAL SPLIT
+# =============================================================================
+split:
+  train_ratio: 0.8
+  val_ratio: 0.2
+  shuffle: true
+  random_seed: 2001
+
+# =============================================================================
+# CHUNKING & SAVING
+# =============================================================================
+output:
+  # Format zapisu
+  format: "npz"
+  compression: true
+  
+  # Chunking (memory efficiency)
+  chunk_size: 10_000_000  # 10M przykładów na chunk
+  
+  # Naming convention
+  train_prefix: "train_chunk"
+  val_prefix: "val_chunk"
+  
+  # Zawartość chunków
+  arrays:
+    - "board"      # tensor (8, 8, 12) uint8
+    - "cp"         # float32
+    - "fen"        # string (do debugowania/analiz)
+    - "depth"      # uint8 (głębokość analizy Stockfish)
+    - "knodes"     # uint32 (kilonodes)
+
+# =============================================================================
+# LOGGING & DEBUGGING
+# =============================================================================
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  save_samples: true
+  sample_size: 1000  # ile przykładów zapisać do data/samples
+
+# =============================================================================
+# COMPUTE RESOURCES
+# =============================================================================
+compute:
+  # Download
+  download_workers: 4  # parallel downloads
+  
+  # Processing
+  processing_batch_size: 100_000  # ile wierszy przetwarzać naraz
+  
+  # Memory
+  gc_frequency: 1  # co ile plików garbage collection
