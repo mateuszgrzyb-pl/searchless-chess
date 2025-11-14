@@ -1,0 +1,34 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 1. Pobranie kodu z repozytorium.
+      - name: Checkout kodu
+        uses: actions/checkout@v4
+
+      # 2. Ustawienie konkretnej wersji Pythona.
+      - name: Ustawienie Pythona 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      # 3. Instalacja Poetry.
+      - name: Instalacja Poetry
+        uses: snok/install-poetry@v1
+
+      # 4. Instalacja zależności z "poetry.lock".
+      - name: Instalacja zależności
+        run: poetry install --no-root
+
+      # 5. Uruchomienie testów.
+      - name: Uruchomienie testów
+        run: poetry run pytest
