@@ -55,7 +55,3 @@ MIT License
 **Principal AI/ML Engineer**
 
 LinkedIn: [Mateusz Grzyb](https://www.linkedin.com/in/mateusz--grzyb/)
-
----
-
-⭐ **Star this repo if you find it interesting!**
