@@ -14,3 +14,10 @@ Usage:
     python scripts/download_data.py
     python scripts/download_data.py --config configs/config.yaml
 """
+
+
+def main():
+    """Tu pojawi się opis."""
+
+if __name__ == "__main__":
+    main()
