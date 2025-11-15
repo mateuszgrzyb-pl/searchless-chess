@@ -40,7 +40,7 @@ poetry install
 poetry shell
 ```
 
-### ...or insta requirements with pip.
+### ...or install requirements with pip.
 ```bash
 pip install -r requirements.txt
 ```
