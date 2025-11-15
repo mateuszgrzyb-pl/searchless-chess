@@ -28,11 +28,24 @@ Training data from **Lichess** via HuggingFace:
 
 ## 🚀 Installation
 
+### Download code
 ```bash
 git clone https://github.com/mateuszgrzyb-pl/searchless-chess.git
 cd searchless-chess
+```
+
+### Create venv with Poetry... (recommended)
+```bash
+poetry install
+poetry shell
+```
+
+### ...or insta requirements with pip.
+```bash
 pip install -r requirements.txt
 ```
+
+
 
 ---
 
