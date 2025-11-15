@@ -6,7 +6,7 @@ This script downloads parquet files from the Lichess dataset and saves them
 to the stage_0_raw directory. It supports:
 - Progress tracking with tqdm
 - Resume capability (skips already downloaded files)
-- Parallel downloads
+- Parallel download
 - Retry logic for failed downloads
 - Validation of downloaded files
 
