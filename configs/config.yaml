@@ -4,7 +4,9 @@
 data:
   source:
     base_url: "https://huggingface.co/datasets/Lichess/chess-position-evaluations/resolve/main/data"
-    train_files: 16
+    number_range_start: 0
+    number_range_stop: 16
+    
     # TODO: Później dorzucić dodać val/test files później
   
   # Katalogi do zapisu danych
