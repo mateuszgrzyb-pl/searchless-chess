@@ -4,17 +4,18 @@
 data:
   source:
     base_url: "https://huggingface.co/datasets/Lichess/chess-position-evaluations/resolve/main/data"
-    number_range_start: 0
-    number_range_stop: 16
+    range_start: 0
+    range_stop: 16
+    num_of_files: 16
     
     # TODO: Później dorzucić dodać val/test files później
   
   # Katalogi do zapisu danych
   paths:
-  stage_0_raw: "data/stage_0_raw"           # surowe parquety
-  stage_1_filtered: "data/stage_1_filtered" # po filtrowaniu
-  stage_2_encoded: "data/stage_2_encoded"   # gotowe tensory
-  samples: "data/samples"                   # próbki do debugowania
+    stage_0_raw: "data/stage_0_raw"           # surowe parquety
+    stage_1_filtered: "data/stage_1_filtered" # po filtrowaniu
+    stage_2_encoded: "data/stage_2_encoded"   # gotowe tensory
+    samples: "data/samples"                   # próbki do debugowania
   
   # Kolumny do wczytania z parquet
   columns: ["fen", "depth", "knodes", "cp", "mate"]
