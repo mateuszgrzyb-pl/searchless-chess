@@ -77,6 +77,11 @@ def download_parquet_file(url: str, out_path: str):
 
 def main():
     """Main data retrieval function"""
+    log_path = Path("logs/data_processing/")
+    log_path.mkdir(parents=True, exist_ok=True)
+    logger.add(log_path / "download_data_{time:YYYY-MM-DD}.log",
+         rotation="5 MB",     # New file every 50MB
+         retention=10)         # Keep only 10 old files
     logger.info("Download Lichess chess position evaluations from HuggingFace")
 
     # Step 1. Configuration.
