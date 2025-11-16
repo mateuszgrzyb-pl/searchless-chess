@@ -5,7 +5,7 @@ data:
   source:
     base_url: "https://huggingface.co/datasets/Lichess/chess-position-evaluations/resolve/main/data"
     range_start: 0
-    range_stop: 16
+    range_stop: 2
     num_of_files: 16
     
     # TODO: Później dorzucić dodać val/test files później
