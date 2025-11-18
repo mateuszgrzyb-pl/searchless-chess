@@ -1,8 +1,6 @@
-import io
-from pathlib import Path
+"""Tests for `download_data` module"""
 from unittest.mock import patch, MagicMock
 
-import pytest
 from src.utils.tools import load_config
 from src.download_data import (
     generate_urls,
