@@ -2,7 +2,7 @@
 from unittest.mock import patch, MagicMock
 
 from src.utils.tools import load_config
-from src.download_data import (
+from src.data_downloading import (
     generate_urls,
     download_parquet_file,
 )
