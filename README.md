@@ -20,9 +20,25 @@ No minimax. No alpha-beta pruning. Pure neural intuition.
 
 ## 📊 Dataset
 
-Training data from **Lichess** via HuggingFace:
+### Original training data from **Lichess** via HuggingFace:
 - [Lichess/chess-position-evaluations](https://huggingface.co/datasets/Lichess/chess-position-evaluations)
-- Millions of positions with Stockfish deep analysis
+- ~784M of positions with Stockfish deep analysis
+
+### Transformer, ready-to-Use Training Dataset (HuggingFace)
+
+A fully processed, **deduplicated** version of the Lichess evaluation database is available for this project:
+
+- **316,072,343** unique chess positions (FEN-based deduplication, keeping max `depth`)
+- Stored in **Parquet**, split into **10 parts** (~32M positions each)
+- Optimized for ML pipelines — fast loading, reduced size, unnecessary fields removed
+- Licensed under **CC BY 4.0**
+
+Example of usage:
+```python
+from datasets import load_dataset
+dataset = load_dataset("mateuszgrzyb/lichess-stockfish-normalized", split="train")
+```
+Dataset page: [https://huggingface.co/datasets/mateuszgrzyb/lichess-stockfish-normalized](https://huggingface.co/datasets/mateuszgrzyb/lichess-stockfish-normalized)
 
 ---
 
