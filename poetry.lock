@@ -1622,6 +1622,7 @@ files = [
 
 [package.dependencies]
 polars-runtime-32 = "1.35.2"
+polars-runtime-compat = {version = "1.35.2", optional = true, markers = "extra == \"rtcompat\""}
 
 [package.extras]
 adbc = ["adbc-driver-manager[dbapi]", "adbc-driver-sqlite[dbapi]"]
@@ -1667,6 +1668,23 @@ files = [
     {file = "polars_runtime_32-1.35.2-cp39-abi3-win_amd64.whl", hash = "sha256:ddc015fac39735592e2e7c834c02193ba4d257bb4c8c7478b9ebe440b0756b84"},
     {file = "polars_runtime_32-1.35.2-cp39-abi3-win_arm64.whl", hash = "sha256:6861145aa321a44eda7cc6694fb7751cb7aa0f21026df51b5faa52e64f9dc39b"},
     {file = "polars_runtime_32-1.35.2.tar.gz", hash = "sha256:6e6e35733ec52abe54b7d30d245e6586b027d433315d20edfb4a5d162c79fe90"},
+]
+
+[[package]]
+name = "polars-runtime-compat"
+version = "1.35.2"
+description = "Blazingly fast DataFrame library"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "polars_runtime_compat-1.35.2-cp39-abi3-macosx_10_12_x86_64.whl", hash = "sha256:99ff98702458da27d2be28f55e41e1ad8f3fe1fdc783dbf24875fb6d031d353f"},
+    {file = "polars_runtime_compat-1.35.2-cp39-abi3-macosx_11_0_arm64.whl", hash = "sha256:2dfe58e088568b04ecc002b595c28ad82cb4d1bec9e3f410ecbe839680348a34"},
+    {file = "polars_runtime_compat-1.35.2-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:da3fae76c214c72e805f2084305b9df5b34c4e82d92968b9e574a5cba4ac0836"},
+    {file = "polars_runtime_compat-1.35.2-cp39-abi3-manylinux_2_24_aarch64.whl", hash = "sha256:46d24653c6fec8179ca6ddfb1e588f5ae590f46db61d97479f6fc635cfc40a59"},
+    {file = "polars_runtime_compat-1.35.2-cp39-abi3-win_amd64.whl", hash = "sha256:0180441deda8f6b5e16b49c92db2079d300f24c2aab421170e2c9b06deac79c3"},
+    {file = "polars_runtime_compat-1.35.2-cp39-abi3-win_arm64.whl", hash = "sha256:b13d70d1fe0f41ebd56f22c25a9cc34a91fd4cf7f25e58ed4bdd39d7e4f91a5b"},
+    {file = "polars_runtime_compat-1.35.2.tar.gz", hash = "sha256:1947c6ecfe0b42bb85ff1519eb2d62abb2247d52b8ce52156fff0595b4a82d8a"},
 ]
 
 [[package]]
@@ -2619,4 +2637,4 @@ dev = ["pytest", "setuptools"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11, <4.0"
-content-hash = "b9a07ea524448b47b32e3197db6d9b9c99f02debf71bb032055621fcd5189b26"
+content-hash = "d42277b8fed56117d9edce2cbe2fcaa1a47bfb1a04b280eba6b0ee8ea7ab8efb"

@@ -32,35 +32,33 @@ def main():
     )
     logger.info("Stage 1: starting process of deduplicating FENs on file level.")
 
-    output_dir = Path("/data/stage_1_deduplicated")
+    output_dir = Path("data/stage_1_deduplicated")
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # Step 1. Get files to process.
-    paths = sorted(glob.glob("/data/stage_0_raw/*.parquet"))
+    paths = sorted(glob.glob("data/stage_0_raw/*.parquet"))
     if len(paths) == 0:
         logger.error(
-            'Found no files to process in /data/stage_0_raw location. '
+            'Found no files to process in data/stage_0_raw location. '
             'Please download files using scripts/stage_0_download_data.py script'
         )
         return
 
-    logger.info(f'Found {len(paths)} files to process in /data/stage_0_raw location.')
+    logger.info(f'Found {len(paths)} files to process in data/stage_0_raw location.')
 
     for path in tqdm(paths):
         # Step 2. Process every file.
-        logger.info(f'Started processing file: {filename}')
         filename = Path(path).name
-
+        logger.info(f'Started processing file: {filename}')
         q = (
             pl.scan_parquet(path)
             .select(['fen', 'depth', 'cp', 'mate'])
             .sort(['fen', 'depth'], descending=[False, True])
             .unique(subset=['fen'], keep='first')
         )
-        logger.success(f'Successfully processed file: {filename}')
-
         # Step 3. Save file.
         q.sink_parquet(output_dir / filename)
+        logger.success(f'Successfully processed file: {filename}')
         logger.success(f'File {filename} saved in {output_dir}')
 
 if __name__ == '__main__':
