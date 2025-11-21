@@ -32,24 +32,24 @@ def main():
     )
     logger.info("Stage 2: starting process of deduplicating FENs on dataset level.")
 
-    output_dir = Path("/data/stage_2_deduplicated")
+    output_dir = Path("data/stage_2_deduplicated")
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # Step 1. Get files to process.
-    files = sorted(glob.glob("/data/stage_1_deduplicated/*.parquet"))
+    files = sorted(glob.glob("data/stage_1_deduplicated/*.parquet"))
     if len(files) == 0:
         logger.error(
-            'Found no files to process in /data/stage_1_deduplicated location. '
+            'Found no files to process in data/stage_1_deduplicated location. '
             'Please process files using scripts/stage_1_deduplicate_data.py script'
         )
         return
 
-    logger.info(f'Found {len(files)} files to process in /data/stage_1_deduplicated location.')
+    logger.info(f'Found {len(files)} files to process in data/stage_1_deduplicated location.')
 
     # Step 2. Process all files at once.
     logger.info('Started processing files from /data/stage_1_deduplicated')
     q = (
-        pl.scan_parquet("/data/stage_1_deduplicated/*.parquet")
+        pl.scan_parquet("data/stage_1_deduplicated/*.parquet")
         .select(['fen', 'depth', 'cp', 'mate'])
         .sort(['fen', 'depth'], descending=[False, True])
         .unique(subset=['fen'], keep='first')
