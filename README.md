@@ -40,21 +40,7 @@ dataset = load_dataset("mateuszgrzyb/lichess-stockfish-normalized", split="train
 ```
 Dataset page: [https://huggingface.co/datasets/mateuszgrzyb/lichess-stockfish-normalized](https://huggingface.co/datasets/mateuszgrzyb/lichess-stockfish-normalized)
 
-**Note:** This dataset corresponds to the output of the data processing pipeline's final stage (`scripts/stage_2_deduplicate_data.py`), which performs global deduplication across all files. The 10-part split was created for convenient distribution and incremental loading.
-
-### Data Processing Pipeline
-
-The raw Lichess data undergoes a two-stage deduplication process:
-
-1. **Stage 1** (`scripts/stage_1_deduplicate_data.py`): File-level deduplication
-   - Input: ~784M positions with duplicates
-   - Output: ~400M positions (unique per file)
-
-2. **Stage 2** (`scripts/stage_2_deduplicate_data.py`): Global deduplication
-   - Input: Stage 1 output
-   - Output: **316M globally unique positions** → Split into 10 parts and published to HuggingFace
-
-For full pipeline details, see the `scripts/` directory.
+**Processing:** This dataset is the output of `scripts/stage_2_deduplicate_data.py`, which performs global deduplication across all Stage 1 files, then splits the result into 10 parts for distribution.
 
 ---
 
