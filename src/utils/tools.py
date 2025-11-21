@@ -41,4 +41,3 @@ def split_parquet_streaming(input_file, output_dir, rows_per_file=100000):
         table = pa.Table.from_batches(current_batch)
         output_file = os.path.join(output_dir, f'part_{part_num:03d}.parquet')
         pq.write_table(table, output_file)
-        print(f"Zapisano {output_file} ({len(table)} wierszy)")
