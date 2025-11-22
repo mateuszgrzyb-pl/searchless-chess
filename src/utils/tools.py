@@ -29,7 +29,7 @@ def split_parquet_streaming(input_file, output_dir, rows_per_file=100000):
 
         if current_rows >= rows_per_file:
             table = pa.Table.from_batches(current_batch)
-            output_file = os.path.join(output_dir, f'part_{part_num:03d}.parquet')
+            output_file = os.path.join(output_dir, f'train-{part_num:05d}.parquet')
             pq.write_table(table, output_file)        
             # Reset
             current_batch = []
@@ -39,5 +39,5 @@ def split_parquet_streaming(input_file, output_dir, rows_per_file=100000):
     # Save data
     if current_batch:
         table = pa.Table.from_batches(current_batch)
-        output_file = os.path.join(output_dir, f'part_{part_num:03d}.parquet')
+        output_file = os.path.join(output_dir, f'train-{part_num:05d}.parquet')
         pq.write_table(table, output_file)
