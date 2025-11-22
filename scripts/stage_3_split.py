@@ -57,7 +57,7 @@ def main():
         output_dir=output_dir,
         rows_per_file=1_000_000)
 
-    logger.success('Successfully processed full_dataset_parquet')
+    logger.success('Successfully processed full_dataset.parquet')
     logger.success(f'Files saved in {output_dir}')
 
 if __name__ == '__main__':
