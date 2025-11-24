@@ -27,7 +27,7 @@ def main():
     # Step 1. Configuration.
     logger.info('Loading config file.')
     config = load_config('configs/config.yaml')
-    base_url = config['data']['source']['base_url']
+    base_url = config['data']['source']['base_data_url']
     range_start = config['data']['source']["range_start"]
     range_stop = config['data']['source']["range_stop"]
     num_of_files = config['data']['source']['num_of_files']
