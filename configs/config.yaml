@@ -3,7 +3,8 @@
 # =============================================================================
 data:
   source:
-    base_url: "https://huggingface.co/datasets/Lichess/chess-position-evaluations/resolve/main/data"
+    base_data_url: "https://huggingface.co/datasets/Lichess/chess-position-evaluations/resolve/main/data"
+    processed_data: "mateuszgrzyb/lichess-stockfish-normalized"
     range_start: 0
     range_stop: 2
     num_of_files: 16

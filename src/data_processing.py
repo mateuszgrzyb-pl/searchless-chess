@@ -91,8 +91,8 @@ def fen_to_tensor(fen: str, always_white_perspective=True) -> np.ndarray:
     
     Returns:
         Tensor of shape (8, 8, 12) where channels represent:
-        0-5: White pieces (Pawn, Knight, Bishop, Rook, Queen, King)
-        6-11: Black pieces (Pawn, Knight, Bishop, Rook, Queen, King)
+        0-5: Friendly pieces (Pawn, Knight, Bishop, Rook, Queen, King)
+        6-11: Enemy pieces (Pawn, Knight, Bishop, Rook, Queen, King)
     """
     board = chess.Board(fen)
 
