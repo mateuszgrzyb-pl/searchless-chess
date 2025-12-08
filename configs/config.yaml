@@ -128,7 +128,7 @@ callbacks:
     enabled: true
     histogram_freq: 1  # save hist every 1 epoch
     write_graph: true  # enable GRAPHS
-    write_images: true  # enable IMAGES
+    write_images: false  # enable IMAGES
 
 # =============================================================================
 # MODELLING
