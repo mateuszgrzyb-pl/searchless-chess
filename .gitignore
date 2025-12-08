@@ -3,6 +3,7 @@
 *.feather
 *.zst
 *.csv
+*.tfrec
 !data/samples/*.csv
 
 # Byte-compiled / optimized / DLL files
