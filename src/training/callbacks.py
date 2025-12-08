@@ -63,7 +63,10 @@ def load_callbacks_from_config(logs_dir: str, checkpoint_dir: str, steps_per_epo
     if config['tensorboard']['enabled']:
         callbacks.append(
             keras.callbacks.TensorBoard(
-                log_dir=logs_dir
+                log_dir=logs_dir,
+                histogram_freq=config['tensorboard'].get('histogram_freq', 0),
+                write_graph=config['tensorboard'].get('write_graph', True),
+                write_images=config['tensorboard'].get('write_images', False)
             )
         )
 

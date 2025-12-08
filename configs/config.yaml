@@ -126,6 +126,9 @@ callbacks:
 
   tensorboard:
     enabled: true
+    histogram_freq: 1  # save hist every 1 epoch
+    write_graph: true  # enable GRAPHS
+    write_images: true  # enable IMAGES
 
 # =============================================================================
 # MODELLING
@@ -133,5 +136,5 @@ callbacks:
 modelling:
   learning_rate: 0.001
   clipnorm: 1.0
-  batch_size: 1024
+  batch_size: 512
   epochs: 20
