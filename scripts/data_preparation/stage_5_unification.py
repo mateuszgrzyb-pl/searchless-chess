@@ -9,7 +9,7 @@ This stage:
   using sigmoid scaling (Win Probability), which ensures stable gradients during training.
 - Parses 'fen' strings into dense numerical tensors (e.g., 8x8x14 flat arrays).
 - Removes the 'depth' column and other unused metadata.
-- Shards the dataset into hundreds of smaller files (~100-200MB each) to enable 
+- Shards the dataset into hundreds of smaller files (~100-200MB each) to enable
   parallel reading and perfect shuffling.
 - Applies GZIP compression to minimize storage footprint and maximize I/O throughput.
 
