@@ -87,6 +87,7 @@ def main():
         callbacks=callbacks,
         verbose=1
     )
+    logger.success('Modelling finished!')
 
 if __name__ == '__main__':
     main()
