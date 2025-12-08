@@ -8,14 +8,13 @@ data:
     range_start: 0
     range_stop: 2
     num_of_files: 16
-    
-    # TODO: Później dorzucić dodać val/test files później
   
   # Katalogi do zapisu danych
   paths:
     stage_0_raw: "data/stage_0_raw"           # surowe parquety
     stage_1_filtered: "data/stage_1_filtered" # po filtrowaniu
     stage_2_encoded: "data/stage_2_encoded"   # gotowe tensory
+    stage_5_unified: "data/stage_5_unified"   # dane do modelowania
     samples: "data/samples"                   # próbki do debugowania
   
   # Kolumny do wczytania z parquet
@@ -61,8 +60,9 @@ preprocessing:
 # TRAIN/VAL SPLIT
 # =============================================================================
 split:
-  train_ratio: 0.8
-  val_ratio: 0.2
+  total_samples: 1_000_000
+  train_ratio: 0.95
+  val_ratio: 0.05
   shuffle: true
   random_seed: 2001
 
@@ -75,7 +75,7 @@ output:
   compression: true
   
   # Chunking (memory efficiency)
-  chunk_size: 10_000_000  # 10M przykładów na chunk
+  chunk_size: 1_000_000  # 10M przykładów na chunk
   
   # Naming convention
   train_prefix: "train_chunk"
@@ -98,14 +98,40 @@ logging:
   sample_size: 1000  # ile przykładów zapisać do data/samples
 
 # =============================================================================
-# COMPUTE RESOURCES
+# CALLBACKS
 # =============================================================================
-compute:
-  # Download
-  download_workers: 4  # parallel downloads
-  
-  # Processing
-  processing_batch_size: 100_000  # ile wierszy przetwarzać naraz
-  
-  # Memory
-  gc_frequency: 1  # co ile plików garbage collection
+callbacks:
+  epoch_checkpoint:
+    enabled: true
+    checkpoint_dir: ""
+    filename: "epoch_{epoch:02d}.keras"
+    save_every: 5
+    verbose: 1
+
+  best_checkpoint:
+    enabled: true
+    filename: "best_model.keras"
+    monitor: "val_loss"
+    mode: "min"
+    verbose: 1
+
+  early_stopping:
+    enabled: true
+    monitor: "val_loss"
+    patience: 5
+    restore_best_weights: true
+    mode: "min"
+    min_delta: 0.00005  # ignoruj zmiany < 0.00005 (noise threshold)
+    verbose: 1
+
+  tensorboard:
+    enabled: true
+
+# =============================================================================
+# MODELLING
+# =============================================================================
+modelling:
+  learning_rate: 0.001
+  clipnorm: 1.0
+  batch_size: 1024
+  epochs: 20
