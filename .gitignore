@@ -215,5 +215,14 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 
-# Other
+# MacOS system files
 .DS_Store
+
+# TensorBoard files
+*.v2
+
+# Config files
+config_*.yaml
+
+# Checkpoints
+checkpoints/
