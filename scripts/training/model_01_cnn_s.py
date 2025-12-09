@@ -8,7 +8,7 @@ from loguru import logger
 import keras
 import tensorflow as tf
 
-from src.models.shallow_cnn import ShallowCNN
+from src.models.shallow_cnn import build_shallow_cnn
 from src.utils.tools import create_dataset, load_config, setup_training_environment
 from src.training.callbacks import load_callbacks_from_config
 
@@ -74,7 +74,7 @@ def main():
     # Step 4. Preparing model
     logger.info('Step 4. Preparing model.')
     optimizer = keras.optimizers.Adam(learning_rate=learning_rate, clipnorm=clipnorm)
-    model = ShallowCNN(config={'input_shape':(8, 8, 12)})
+    model = build_shallow_cnn(config={'input_shape':(8, 8, 12)})
     model.compile(optimizer=optimizer, loss='mse', metrics=['mae'])
 
     # Step 5. Modelling
