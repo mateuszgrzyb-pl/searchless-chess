@@ -242,4 +242,4 @@ def build_resnet_cnn(
         kernel_regularizer=l2(l2_value)
     )(v)
 
-    return Model(inputs=inp, outputs=out, name='ResNet_Value_Model')
+    return Model(inputs=inp, outputs=out, name='resnet_value_model')
