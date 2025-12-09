@@ -124,6 +124,14 @@ callbacks:
     min_delta: 0.00005  # ignoruj zmiany < 0.00005 (noise threshold)
     verbose: 1
 
+  reduce_lr_on_plateau:
+    enabled: true
+    monitor: "val_loss"
+    factor: 0.2
+    patience: 3
+    min_lr: 0.000001
+    verbose: 1
+
   tensorboard:
     enabled: true
     histogram_freq: 1  # save hist every 1 epoch

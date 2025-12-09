@@ -19,8 +19,9 @@ def load_callbacks_from_config(logs_dir: str, checkpoint_dir: str, steps_per_epo
     callbacks = []
 
     # Backup every n-epochs
-    if config['epoch_checkpoint']['enabled'] is True:
-        save_every_epochs = config['epoch_checkpoint']['save_every']
+    backup_cfg = config.get('epoch_checkpoint', {})
+    if backup_cfg.get('enabled', False) is True:
+        save_every_epochs = backup_cfg.get('save_every', 5)
         if steps_per_epoch:
             save_freq = int(save_every_epochs * steps_per_epoch)
         else:
@@ -30,43 +31,59 @@ def load_callbacks_from_config(logs_dir: str, checkpoint_dir: str, steps_per_epo
             keras.callbacks.ModelCheckpoint(
                 filepath=f'{checkpoint_dir}/epoch_{{epoch:02d}}.keras',
                 save_freq=save_freq,
-                verbose=config['epoch_checkpoint']['verbose']
+                verbose=backup_cfg.get('verbose', 0)
             )
         )
 
     # Best model
-    if config['best_checkpoint']['enabled'] is True:
+    best_cfg = config.get('best_checkpoint', {})
+    if best_cfg.get('enabled', False) is True:
         callbacks.append(
             keras.callbacks.ModelCheckpoint(
-                filepath=f'{checkpoint_dir}/{config["best_checkpoint"]["filename"]}',
-                monitor=config['best_checkpoint']['monitor'],
+                filepath=f'{checkpoint_dir}/{best_cfg.get("filename", "best_model.keras")}',
+                monitor=best_cfg.get('monitor', 'val_loss'),
                 save_best_only=True,
-                mode=config['best_checkpoint']['mode'],
-                verbose=config['best_checkpoint']['verbose']
+                mode=best_cfg.get('mode', 'min'),
+                verbose=best_cfg.get('verbose', 0)
             )
         )
 
     # Early Stopping
-    if config['early_stopping']['enabled'] is True:
+    early_stop_cfg = config.get('early_stopping', {})
+    if early_stop_cfg.get('enabled', False) is True:
         callbacks.append(
             keras.callbacks.EarlyStopping(
-                monitor=config['early_stopping']['monitor'],
-                patience=config['early_stopping']['patience'],
-                restore_best_weights=config['early_stopping']['restore_best_weights'],
-                mode=config['early_stopping']['mode'],
-                min_delta=config['early_stopping']['min_delta'],
-                verbose=config['early_stopping']['verbose']
+                monitor=early_stop_cfg.get('monitor', 'val_loss'),
+                patience=early_stop_cfg.get('patience', 5),
+                restore_best_weights=early_stop_cfg.get('restore_best_weights', True),
+                mode=early_stop_cfg.get('mode', 'min'),
+                min_delta=early_stop_cfg.get('min_delta', 0.00005),
+                verbose=early_stop_cfg.get('verbose', 0)
+            )
+        )
+
+    # Reduce LR on Plateau
+    reduce_lr_cfg = config.get('reduce_lr_on_plateau', {})
+    if reduce_lr_cfg.get('enabled', False):
+        callbacks.append(
+            keras.callbacks.ReduceLROnPlateau(
+                monitor=reduce_lr_cfg.get('monitor', 'val_loss'),
+                factor=reduce_lr_cfg.get('factor', 0.1),
+                patience=reduce_lr_cfg.get('patience', 10),
+                min_lr=reduce_lr_cfg.get('min_lr', 0.0),
+                verbose=reduce_lr_cfg.get('verbose', 0)
             )
         )
 
     # TensorBoard
-    if config['tensorboard']['enabled']:
+    tensorboard_cfg = config.get('tensorboard', {})
+    if tensorboard_cfg.get('enabled', False):
         callbacks.append(
             keras.callbacks.TensorBoard(
                 log_dir=logs_dir,
-                histogram_freq=config['tensorboard'].get('histogram_freq', 0),
-                write_graph=config['tensorboard'].get('write_graph', True),
-                write_images=config['tensorboard'].get('write_images', False)
+                histogram_freq=tensorboard_cfg.get('histogram_freq', 0),
+                write_graph=tensorboard_cfg.get('write_graph', True),
+                write_images=tensorboard_cfg.get('write_images', False)
             )
         )
 
