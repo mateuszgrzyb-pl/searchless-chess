@@ -127,7 +127,7 @@ callbacks:
   reduce_lr_on_plateau:
     enabled: true
     monitor: "val_loss"
-    factor: 0.2
+    factor: 0.5
     patience: 3
     min_lr: 0.000001
     verbose: 1
@@ -142,7 +142,9 @@ callbacks:
 # MODELLING
 # =============================================================================
 modelling:
-  learning_rate: 0.001
+  learning_rate: 0.0001
+  min_learning_rate: 0.000001
   clipnorm: 1.0
   batch_size: 512
-  epochs: 20
+  epochs: 100
+  weight_decay: 0.0001
