@@ -75,7 +75,9 @@ def main():
     logger.info('Step 4. Preparing model.')
     optimizer = keras.optimizers.Adam(learning_rate=learning_rate, clipnorm=clipnorm)
     model = build_shallow_cnn(config={'input_shape':(8, 8, 12)})
+
     model.compile(optimizer=optimizer, loss='mse', metrics=['mae'])
+    model.summary()
 
     # Step 5. Modelling
     model.fit(

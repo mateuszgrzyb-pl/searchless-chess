@@ -87,6 +87,7 @@ def main():
     )
 
     model.compile(optimizer=optimizer, loss='mse', metrics=['mae'])
+    model.summary()
 
     # Step 5. Modelling
     model.fit(
@@ -98,7 +99,6 @@ def main():
         callbacks=callbacks,
         verbose=1
     )
-    model.summary()
     logger.success('Modelling finished!')
 
 if __name__ == '__main__':
