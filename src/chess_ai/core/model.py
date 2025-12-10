@@ -2,36 +2,56 @@
 The main wrapper class for the Keras model.
 Responsible for loading the model, predicting moves, and evaluating positions.
 """
-from typing import List
+from typing import Optional
 
-import chess
+import numpy as np
 from chess import Board, Move
-from tensorflow.keras.models import load_model
+from keras.models import load_model
+import tensorflow as tf
+
+from src.data_preparation.data_processing import fen_to_tensor
 
 
 class ChessAI:
+    """
+    Class to manage AI chess bot.
+    """
     def __init__(self, model_path: str):
         self.model_path = model_path
-        self.model = load_model(model_path)
+        self.model = load_model(model_path, compile=False)
 
-    def predict_move(self, board: Board) -> Move:
-        legal_moves = board.generate_legal_moves()
+    @tf.function(reduce_retracing=True)
+    def predict(self, input_tensor):
+        """Fast Keras prediction"""
+        return self.model(input_tensor, training=False)
 
-        # 2. Prosi o listę legalnych ruchów. Będzie ich "n".
-        # 3. Konwertuje n-ruchów do n-pozycji FEN.
-        # 4. Konwertuje wszystkie FEN na tensory.
-        # 5. Ocenia wszystkie legalne ruchy
-        # 6. Wybiera najlepszy ruch.
-        # 7. Zwraca najlepszy ruch.
-        pass
+    def make_move(self, board: Board) -> Optional[Move]:
+        """
+        Predicts which move will be the best based on model evaluation.
+        Returns None if no moves are possible (game over).
+        """
+        # 1. Get list of legal moves
+        legal_moves = list(board.legal_moves)
 
-    def get_list_of_boards_with_legal_moves(self, board: Board, legal_moves: List[Move]) -> List[Board]:
-        list_of_boards = []
+        if not legal_moves:
+            return None
+
+        # 2. Creates list of tensors for every legal move
+        input_tensors = []
         for move in legal_moves:
             board.push(move)
-            list_of_boards.append(board)
-            board.pop()
-        return list_of_boards
+            fen = board.fen()
+            tensor = fen_to_tensor(fen, always_white_perspective=True)
+            input_tensors.append(tensor)
+            board.pop() # Cancel move to get previous board state
 
-    def evaluate_position(self, fen: str) -> float:
-        pass
+        tensors_batch = np.array(input_tensors)
+
+        # 3. Prediction for all moves (Batch Prediction).
+        evaluations = self.predict(tensors_batch)
+        evaluations = evaluations.numpy().flatten()
+
+        # 4. Choosing the best move.
+        best_move_id = np.argmin(evaluations)
+
+        return legal_moves[best_move_id]
