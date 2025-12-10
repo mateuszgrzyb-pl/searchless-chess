@@ -2,7 +2,7 @@
 import chess
 import numpy as np
 
-from src.data_processing import (
+from src.data_preparation.data_processing import (
     allowed_pieces_only,
     mate_to_cp,
     fen_to_tensor

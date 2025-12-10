@@ -9,7 +9,7 @@ from pathlib import Path
 
 from loguru import logger
 
-from src.data_downloading import (
+from src.data_preparation.data_downloading import (
     generate_urls,
     download_parquet_file
 )
