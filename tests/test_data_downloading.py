@@ -44,7 +44,7 @@ def test_generate_urls_basic():
     assert urls[1][1] == "train-00001-of-00100.parquet"
 
 
-@patch("src.data_downloading.requests.get")
+@patch("src.data_preparation.data_downloading.requests.get")
 def test_download_parquet_file(mock_get, tmp_path):
     """Test downloading a parquet file into a path, without real network calls."""
     # Fake response object
