@@ -5,6 +5,8 @@ from datetime import datetime
 import shutil
 import yaml
 
+import keras
+import numpy as np
 import pyarrow as pa
 import pyarrow.parquet as pq
 import tensorflow as tf
@@ -137,3 +139,89 @@ def setup_training_environment(model_name: str):
     shutil.copy('configs/config.yaml', experiment_log_dir / f"config_{current_time}.yaml")
 
     return experiment_log_dir, checkpoints_dir, tensorboard_dir
+
+
+class WarmUpCosineDecay(keras.optimizers.schedules.LearningRateSchedule):
+    """
+    Learning rate schedule with linear warmup followed by cosine decay.
+
+    This schedule linearly increases the learning rate from 0 to target_lr during
+    the warmup phase, then applies cosine annealing decay from target_lr to min_lr
+    for the remaining training steps. This approach is commonly used in training
+    Vision Transformers and other deep learning models to stabilize early training
+    and smoothly reduce the learning rate toward the end.
+
+    Parameters
+    ----------
+    target_lr : float
+        Peak learning rate reached after the warmup phase.
+    warmup_steps : int
+        Number of steps for the linear warmup phase.
+    total_steps : int
+        Total number of training steps (warmup + decay).
+    min_lr : float, default 1e-6
+        Minimum learning rate at the end of training.
+
+    Examples
+    --------
+    >>> lr_schedule = WarmUpCosineDecay(
+    ...     target_lr=2e-4,
+    ...     warmup_steps=5000,
+    ...     total_steps=100000,
+    ...     min_lr=1e-6
+    ... )
+    >>> optimizer = AdamW(learning_rate=lr_schedule)
+    """
+    def __init__(self, target_lr, warmup_steps, total_steps, min_lr=1e-6):
+        super().__init__()
+        self.target_lr = target_lr
+        self.warmup_steps = warmup_steps
+        self.total_steps = total_steps
+        self.min_lr = min_lr
+
+    def __call__(self, step):
+        """
+        Compute learning rate for the given training step.
+
+        Parameters
+        ----------
+        step : int or tf.Tensor
+            Current training step.
+
+        Returns
+        -------
+        tf.Tensor
+            Learning rate value for the current step.
+        """
+        # Warmup phase
+        step = tf.cast(step, tf.float32)
+        warmup_percent = step / self.warmup_steps
+
+        # Cosine decay phase
+        decay_progress = (step - self.warmup_steps) / (self.total_steps - self.warmup_steps)
+        cosine_decay = 0.5 * (1.0 + tf.cos(tf.constant(np.pi) * decay_progress))
+        decayed_lr = self.min_lr + (self.target_lr - self.min_lr) * cosine_decay
+
+        # Logic
+        return tf.cond(
+            step < self.warmup_steps,
+            lambda: self.target_lr * warmup_percent,
+            lambda: decayed_lr
+        )
+
+    def get_config(self):
+        """
+        Returns the configuration of the learning rate schedule.
+
+        Returns
+        -------
+        dict
+            Dictionary containing the schedule parameters (target_lr, warmup_steps,
+            total_steps, min_lr).
+        """
+        return {
+            "target_lr": self.target_lr,
+            "warmup_steps": self.warmup_steps,
+            "total_steps": self.total_steps,
+            "min_lr": self.min_lr
+        }
