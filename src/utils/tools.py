@@ -5,11 +5,15 @@ from datetime import datetime
 import shutil
 import yaml
 
+import chess
 import keras
 import numpy as np
+import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
 import tensorflow as tf
+
+from src.chess_ai.core.model import ChessAI
 
 
 def load_config(config_path: str) -> dict:
@@ -225,3 +229,70 @@ class WarmUpCosineDecay(keras.optimizers.schedules.LearningRateSchedule):
             "total_steps": self.total_steps,
             "min_lr": self.min_lr
         }
+
+
+def test_puzzle_detailed(puzzle: pd.Series, model: ChessAI) -> dict:
+    """
+    Test a chess engine on a single Lichess puzzle and return detailed results.
+
+    Parameters
+    ----------
+    puzzle : pandas.Series
+        A single puzzle row containing at least:
+        - `fen` : str
+            Initial FEN position of the puzzle.
+        - `moves` : list[str]
+            List of UCI moves representing the solution line. 
+            Even indices (0, 2, 4, ...) are opponent moves,
+            odd indices (1, 3, 5, ...) are AI (our) expected moves.
+    model : ChessAI
+        The chess engine implementing `make_move(board)` → `chess.Move | None`.
+
+    Returns
+    -------
+    dict
+        A dictionary with keys:
+        - `success` : bool
+            Whether the engine played all required moves correctly.
+        - `correct_moves` : int
+            Number of moves correctly predicted by the engine.
+        - `total_moves` : int
+            Total number of moves the engine was expected to make.
+        - `moves` : list[str]
+            The full move list of the puzzle (UCI strings).
+
+    Notes
+    -----
+    The engine is expected to respond only to the moves at odd indices
+    of the puzzle's `moves` list. The evaluation stops immediately after
+    the first incorrect move.
+    """
+    board = chess.Board(puzzle.fen)
+    moves = puzzle.moves
+
+    # our moves are at odd indices: 1, 3, 5...
+    our_moves_count = len([m for i, m in enumerate(moves) if i % 2 == 1])
+    correct_moves = 0
+
+    for i, expected_move_uci in enumerate(moves):
+        if i % 2 == 0:
+            # opponent move from puzzle sequence
+            move = chess.Move.from_uci(expected_move_uci)
+            board.push(move)
+        else:
+            # model move
+            predicted_move = model.make_move(board)
+
+            if predicted_move and predicted_move.uci() == expected_move_uci:
+                correct_moves += 1
+                board.push(predicted_move)
+            else:
+                # stop testing after the first mistake
+                break
+
+    return {
+        'success': correct_moves == our_moves_count,
+        'correct_moves': correct_moves,
+        'total_moves': our_moves_count,
+        'moves': moves,
+    }
