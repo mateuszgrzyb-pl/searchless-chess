@@ -6,6 +6,9 @@
 *.tfrec
 !data/samples/*.csv
 
+# Models
+models/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
