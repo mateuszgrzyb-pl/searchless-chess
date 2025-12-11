@@ -123,6 +123,24 @@ Dataset page: [https://huggingface.co/datasets/mateuszgrzyb/lichess-stockfish-no
 
 ---
 
+## 🛠️ Tech Stack
+
+**Framework Evolution:**
+- Started with PyTorch for rapid prototyping
+- Migrated to TensorFlow/Keras for superior GPU utilization (60% → 90% on A100)
+- Keras 3.12 for clean, maintainable code
+
+**Key Technologies:**
+- TensorFlow 2.20 / Keras 3.12 - Deep learning framework
+- HuggingFace Datasets - Data pipeline and hosting
+- Poetry - Dependency management
+- Python 3.11+ - Core language
+
+**Infrastructure:**
+- NVIDIA A100 (40GB) - Primary training compute
+- Google Colab Pro+ - Development environment
+- TFRecord format - Efficient data streaming
+
 ## 🚀 Installation
 
 ### Download code
