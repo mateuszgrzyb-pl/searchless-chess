@@ -61,18 +61,6 @@ move sequences, not explicit search. See [their paper](https://arxiv.org/html/24
 | **ViT-Small**  | 2.64M  | 1817 | 82%                | 68%                | 34%                |
 | **ViT-Medium** | 9.5M   | 1960 | 88%                | 86%                | 45%                |
 
-**Evaluation methodology:**
-- 1200 Lichess puzzles across 12 difficulty tiers
-- Success rate measured as % of puzzles solved correctly
-- ELO estimated via linear regression on puzzle ratings
-- Each tier contains 100 puzzles
-
-**Key observations:**
-- All models perform well on Tier 1 puzzles (beginner-level tactics)
-- Performance divergence becomes pronounced at Tier 2+ (intermediate-advanced)
-- ViT architectures maintain higher accuracy across all difficulty levels
-- ResNet performance plateaus despite parameter scaling (12M → 24M yields minimal ELO gain)
-
 ### Efficiency Analysis
 
 Working with:
@@ -84,6 +72,67 @@ The model achieved **67% of DeepMind's ELO** using **<4% of their resources**.
 
 **Key insight:** Neural chess intuition scales efficiently at smaller scales, 
 demonstrating that cutting-edge AI research is accessible beyond corporate labs.
+
+**Key observations:**
+- All models perform well on Tier 4 puzzles (beginner-level tactics)
+- Performance divergence becomes pronounced at Tier 6+ (intermediate-advanced)
+- ViT architectures maintain higher accuracy across all difficulty levels
+- ResNet performance plateaus despite parameter scaling (12M → 24M yields minimal ELO gain)
+
+## 🧮 Evaluation Methodology
+### ELO Estimation via Puzzle Performance
+Model strength was estimated using a rigorous puzzle-based evaluation approach:
+
+**Dataset:**
+- 1,200 Lichess puzzles spanning 12 difficulty tiers
+- Rating range: 500-3250 ELO
+- 100 puzzles per tier for statistical significance
+- Each puzzle tagged with the rating of the player who originally faced that position
+
+**Evaluation Process:**
+
+1. **Puzzle Solving:** Each model attempts to solve all 1,200 puzzles
+   - Model generates best move for current position
+   - Success = finding the correct tactical sequence
+   - Partial credit for correct initial moves
+
+2. **Tier-Level Aggregation:** Success rates calculated per rating tier
+   ```
+   Example: Tier 2 (500-750 ELO) → 99% accuracy
+            Tier 7 (1750-2000 ELO) → 65% accuracy
+   ```
+
+3. **Linear Regression Mapping:** 
+   - X-axis: Mean puzzle rating per tier
+   - Y-axis: Model accuracy (% solved) for that tier
+   - Fit linear regression: `Rating = f(Accuracy)`
+   - **ELO estimate** = predicted rating at 50% accuracy threshold
+
+4. **Validation:** Results plotted to visualize accuracy decay across difficulty spectrum
+
+![ELO Estimation Example](docs/images/elo_estimation_example.png)
+*Figure: ELO estimation via linear regression. The intersection at 50% accuracy yields the estimated playing strength.*
+
+**Why Puzzles Are Valid for Search-Free Models:**
+
+Traditional engines benefit from search depth in puzzles—finding 2-3 move sequences by exploring the game tree. However, **searchless models evaluate only the immediate position**, making them functionally equivalent to "search depth = 1" players.
+
+This means:
+- Puzzle difficulty directly correlates with position evaluation complexity
+- Multi-move tactics must be recognized from static position patterns alone
+- The 50% accuracy threshold accurately reflects human-equivalent playing strength at that rating level
+- No artificial advantage from puzzle structure (unlike engines with search)
+
+**Key Insight:** A searchless model solving a 2000 ELO puzzle demonstrates the same positional understanding as a 2000 ELO human would need—both rely on pattern recognition rather than calculation.
+
+#### Performance Metrics
+Models evaluated on three key dimensions:
+
+1. **Overall ELO** - Estimated playing strength via regression
+2. **Tier Success Rates** - Accuracy across difficulty levels
+3. **Training Efficiency** - ELO per million parameters and per training hour
+
+**Reproducibility:** Full evaluation code and puzzle dataset available in `notebooks/03_testing_model_elo_on_lichess_puzzles.ipynb`
 
 ## 🔬 Key Discoveries
 ### Vision Transformers vs ResNets
