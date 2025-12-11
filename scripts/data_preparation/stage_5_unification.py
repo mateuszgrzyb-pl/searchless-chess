@@ -26,7 +26,7 @@ from tqdm import tqdm
 import tensorflow as tf
 
 from src.utils.tools import load_config
-from src.data_processing import fen_to_tensor
+from src.data_preparation.data_processing import fen_to_tensor
 
 
 def main():
