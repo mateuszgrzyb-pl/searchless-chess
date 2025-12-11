@@ -73,7 +73,7 @@ demonstrating that cutting-edge AI research is accessible beyond corporate labs.
 
 ### Vision Transformers vs ResNets
 
-![Model Comparison Chart](docs/images/model_comparison_small.png "Performance vs Parameters: ViT achieves 10x parameter efficiency over ResNet")
+![Model Comparison Chart](docs/images/model_comparison.png "Performance vs Parameters: ViT achieves 10x parameter efficiency over ResNet")
 
 *Figure 1: ELO performance vs model size. ViT achieves superior parameter efficiency.*
 
