@@ -28,6 +28,7 @@ No minimax. No alpha-beta pruning. Pure neural intuition.
 ## 🔗 Quick Links
 - 📦 [HuggingFace Dataset](https://huggingface.co/datasets/mateuszgrzyb/lichess-stockfish-normalized) - 316M deduplicated positions
 - 🤖 [Pre-trained Models](https://github.com/mateuszgrzyb-pl/searchless-chess/releases) - Download ready-to-use weights
+- 📖 [Model Loading Guide](docs/model_loading_guide.md) - Detailed usage instructions
 - 📓 [Technical Blog Post](#) - Deep dive into methodology (coming soon)
 - 🎮 [Play Against the Bot](#) - Interactive demo (coming soon)
 
