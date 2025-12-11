@@ -8,7 +8,7 @@ from loguru import logger
 import keras
 import tensorflow as tf
 
-from src.models.visual_transformer import build_vit
+from src.models.vision_transformer import build_vit
 from src.utils.tools import create_dataset, load_config, setup_training_environment, WarmUpCosineDecay
 from src.training.callbacks import load_callbacks_from_config
 
