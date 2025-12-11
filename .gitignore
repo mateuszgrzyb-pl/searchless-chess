@@ -5,6 +5,7 @@
 *.csv
 *.tfrec
 !data/samples/*.csv
+!data/puzzles/test_puzzles.feather
 
 # Models
 models/
