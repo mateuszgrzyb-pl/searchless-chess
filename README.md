@@ -16,10 +16,7 @@ on learned intuition from millions of positions evaluated by Stockfish.
 
 **Inspired by:** Google DeepMind's [*"Grandmaster-Level Chess Without Search"*](https://arxiv.org/html/2402.04494v1)
 
----
-
 ## 🎯 About
-
 This project demonstrates that neural networks can develop chess intuition without performing any search. The model:
 
 - **Evaluates positions** based on centipawn (cp) scores from deep Stockfish analysis
@@ -29,14 +26,12 @@ This project demonstrates that neural networks can develop chess intuition witho
 No minimax. No alpha-beta pruning. Pure neural intuition.
 
 ## 🔗 Quick Links
-
 - 📦 [HuggingFace Dataset](https://huggingface.co/datasets/mateuszgrzyb/lichess-stockfish-normalized) - 316M deduplicated positions
 - 🤖 [Pre-trained Models](#models) - Download ready-to-use weights (coming soon)
 - 📓 [Technical Blog Post](#) - Deep dive into methodology (coming soon)
 - 🎮 [Play Against the Bot](#) - Interactive demo (coming soon)
 
 ## 🏆 Key Achievements
-
 - ✅ **~1960 ELO without search** - pure value-based move selection
 - ✅ **10x parameter efficiency** - ViT outperforms ResNet with ~90% fewer parameters
 - ✅ **316M position dataset** - deduplicated, normalized, published on HuggingFace
@@ -44,16 +39,39 @@ No minimax. No alpha-beta pruning. Pure neural intuition.
 - ✅ **200+ hours on NVIDIA A100** - self-funded training demonstrating individual-scale research
 
 ## 📊 Model Comparison
+### Comparison with State-of-the-Art
+Positioning this work within the broader landscape of chess engines:
 
 Model          | Params | Dataset   | Training | ELO  | ELO/1M | Search?
 ---------------|--------|-----------|----------|------|--------|--------
 Stockfish      | ~15M   | ~5B       | -        | 3500 | 233    | Yes
 DeepMind       | 270M   | ~15B      | XXX      | 2895 | 10.7   | No*
-**ViT-large**  | 9.5M   | ~316M     | 72h      | 1960 | 206    | No
-**ViT-small**  | 2.64M  | ~316M     | 24h      | 1817 | 688    | No
+**ViT-Small**  | 2.64M  | ~316M     | 24h      | 1817 | 688    | No
+**ViT-Medium** | 9.5M   | ~316M     | 72h      | 1960 | 206    | No
 
 *DeepMind's model used action prediction (policy head) trained on 
 move sequences, not explicit search. See [their paper](https://arxiv.org/html/2402.04494v1) for details.
+### Trained Models Performance
+| Model          | Params | ELO  | Tier 4 (1000-1250) | Tier 6 (1500-1750) | Tier 8 (2000-2250) |
+|----------------|--------|------|--------------------|--------------------|--------------------|
+| CNN            | 1.18M  | 1112 | 43%                | 22%                | 7%                 |
+| ResNet-M       | 2.3M   | 1515 | 68%                | 40%                | 15%                |
+| ResNet-L       | 12.9M  | 1711 | 76%                | 59%                | 23%                |
+| ResNet-XL      | 24.7M  | 1719 | 72%                | 61%                | 27%                |
+| **ViT-Small**  | 2.64M  | 1817 | 82%                | 68%                | 34%                |
+| **ViT-Medium** | 9.5M   | 1960 | 88%                | 86%                | 45%                |
+
+**Evaluation methodology:**
+- 1200 Lichess puzzles across 12 difficulty tiers
+- Success rate measured as % of puzzles solved correctly
+- ELO estimated via linear regression on puzzle ratings
+- Each tier contains 100 puzzles
+
+**Key observations:**
+- All models perform well on Tier 1 puzzles (beginner-level tactics)
+- Performance divergence becomes pronounced at Tier 2+ (intermediate-advanced)
+- ViT architectures maintain higher accuracy across all difficulty levels
+- ResNet performance plateaus despite parameter scaling (12M → 24M yields minimal ELO gain)
 
 ### Efficiency Analysis
 
@@ -67,10 +85,7 @@ The model achieved **67% of DeepMind's ELO** using **<4% of their resources**.
 **Key insight:** Neural chess intuition scales efficiently at smaller scales, 
 demonstrating that cutting-edge AI research is accessible beyond corporate labs.
 
----
-
 ## 🔬 Key Discoveries
-
 ### Vision Transformers vs ResNets
 
 ![Model Comparison Chart](docs/images/model_comparison.png "Performance vs Parameters: ViT achieves 10x parameter efficiency over ResNet")
@@ -95,10 +110,7 @@ many layers to approximate the same receptive field.
 This aligns with recent research showing transformer superiority in tasks 
 demanding holistic scene understanding.
 
----
-
 ## 📊 Dataset
-
 ### Original training data from **Lichess** via HuggingFace:
 - [Lichess/chess-position-evaluations](https://huggingface.co/datasets/Lichess/chess-position-evaluations)
 - ~784M of positions with Stockfish deep analysis
@@ -121,10 +133,7 @@ Dataset page: [https://huggingface.co/datasets/mateuszgrzyb/lichess-stockfish-no
 
 **Processing:** This dataset is the output of `scripts/stage_2_deduplicate_data.py`, which performs global deduplication across all Stage 1 files, then splits the result into 10 parts for distribution.
 
----
-
 ## 🛠️ Tech Stack
-
 **Framework Evolution:**
 - Started with PyTorch for rapid prototyping
 - Migrated to TensorFlow/Keras for superior GPU utilization (60% → 90% on A100)
@@ -160,21 +169,14 @@ poetry shell
 pip install -r requirements.txt
 ```
 
----
-
 ## 📚 References
 
 - [Google DeepMind: Grandmaster-Level Chess Without Search](https://arxiv.org/html/2402.04494v1)
 - [DeepMind GitHub Repository](https://github.com/google-deepmind/searchless_chess)
 - [Lichess Dataset on HuggingFace](https://huggingface.co/datasets/Lichess/chess-position-evaluations)
 
----
-
 ## 📄 License
-
 MIT License
-
----
 
 ## 📧 Contact
 
