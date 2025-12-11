@@ -1,5 +1,5 @@
 """
-Functions for building ResNet CNN.
+Functions for building ResNet.
 """
 from typing import Tuple
 
@@ -138,7 +138,7 @@ def res_block(
     return y
 
 
-def build_resnet_cnn(
+def build_resnet(
     input_shape: Tuple[int, int, int] = (8, 8, 12),
     filters: int = 32,
     dense_shape: int = 256,

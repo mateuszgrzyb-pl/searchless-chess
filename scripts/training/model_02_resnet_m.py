@@ -8,7 +8,7 @@ from loguru import logger
 import keras
 import tensorflow as tf
 
-from src.models.resnet_cnn import build_resnet_cnn
+from src.models.resnet import build_resnet
 from src.utils.tools import create_dataset, load_config, setup_training_environment
 from src.training.callbacks import load_callbacks_from_config
 
@@ -24,7 +24,7 @@ def main():
     logger.add(experiment_log_dir / "training_{time:YYYY-MM-DD}.log",
          rotation="5 MB",
          retention=10)
-    logger.info(f" {'Creating new ResNet CNN'} ".center(100, "="))
+    logger.info(f" {'Creating new ResNet'} ".center(100, "="))
     logger.info(f" {'2.3M trainable parameters'} ".center(100, "="))
 
     # Step 1. Configuration
@@ -75,7 +75,7 @@ def main():
     logger.info('Step 4. Preparing model.')
     optimizer = keras.optimizers.Adam(learning_rate=learning_rate, clipnorm=clipnorm)
 
-    model = build_resnet_cnn(
+    model = build_resnet(
         input_shape=(8, 8, 12),
         filters=128,
         dense_shape=256,
