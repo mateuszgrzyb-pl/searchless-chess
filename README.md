@@ -27,7 +27,7 @@ No minimax. No alpha-beta pruning. Pure neural intuition.
 
 ## 🔗 Quick Links
 - 📦 [HuggingFace Dataset](https://huggingface.co/datasets/mateuszgrzyb/lichess-stockfish-normalized) - 316M deduplicated positions
-- 🤖 [Pre-trained Models](#models) - Download ready-to-use weights (coming soon)
+- 🤖 [Pre-trained Models](https://huggingface.co/mateuszgrzyb) - Download ready-to-use weights (coming soon)
 - 📓 [Technical Blog Post](#) - Deep dive into methodology (coming soon)
 - 🎮 [Play Against the Bot](#) - Interactive demo (coming soon)
 
@@ -45,7 +45,8 @@ Positioning this work within the broader landscape of chess engines:
 Model          | Params | Dataset   | Training | ELO  | ELO/1M | Search?
 ---------------|--------|-----------|----------|------|--------|--------
 Stockfish      | ~15M   | ~5B       | -        | 3500 | 233    | Yes
-DeepMind       | 270M   | ~15B      | XXX      | 2895 | 10.7   | No*
+DeepMind       | 270M   | ~15B      | N/A      | 2895 | 10.7   | No*
+ResNet-XL      | 24.7M  | ~316M     | N/A      | 1719 | 70     | No
 **ViT-Small**  | 2.64M  | ~316M     | 24h      | 1817 | 688    | No
 **ViT-Medium** | 9.5M   | ~316M     | 72h      | 1960 | 206    | No
 
@@ -85,7 +86,7 @@ Model strength was estimated using a rigorous puzzle-based evaluation approach:
 
 **Dataset:**
 - 1,200 Lichess puzzles spanning 12 difficulty tiers
-- Rating range: 500-3250 ELO
+- Rating range: 399-3213 ELO
 - 100 puzzles per tier for statistical significance
 - Each puzzle tagged with the rating of the player who originally faced that position
 
@@ -98,8 +99,8 @@ Model strength was estimated using a rigorous puzzle-based evaluation approach:
 
 2. **Tier-Level Aggregation:** Success rates calculated per rating tier
    ```
-   Example: Tier 2 (500-750 ELO) → 99% accuracy
-            Tier 7 (1750-2000 ELO) → 65% accuracy
+    Example: Tier 4 (1000-1250 ELO) → ViT-Medium 88% accuracy
+             Tier 8 (2000-2250 ELO) → ViT-Medium 45% accuracy
    ```
 
 3. **Linear Regression Mapping:** 
@@ -145,10 +146,10 @@ The most surprising finding: **Vision Transformers are dramatically more
 parameter-efficient than ResNets for chess position evaluation.**
 
 **Key observations:**
-- ViT-small (2.64M) achieved higher ELO thank ResNet-large (24M) → **~10x fewer parameters**
+- ViT-Small (2.64M) achieved higher ELO than ResNet-XL (24M) → **~10x fewer parameters**
 - ResNet plateaus: 12M→24M params = only +8 ELO improvement
 - ViT scaling: continues improving, suggesting headroom for larger models
-- ViT-small achieves **688 ELO per million parameters** vs ResNet-L ~133 and ResNet-XL ~70
+- ViT-Small achieves **688 ELO per million parameters** vs ResNet-L ~133 and ResNet-XL ~70
 
 **Why transformers excel:**
 Chess positions require global reasoning—understanding how pieces across 
@@ -224,10 +225,24 @@ pip install -r requirements.txt
 - [DeepMind GitHub Repository](https://github.com/google-deepmind/searchless_chess)
 - [Lichess Dataset on HuggingFace](https://huggingface.co/datasets/Lichess/chess-position-evaluations)
 
+## 📝 Citation
+
+If you use this work in your research, please cite:
+```bibtex
+@software{grzyb2024searchless,
+  author = {Grzyb, Mateusz},
+  title = {Searchless Chess: Master-Level Chess Through Pure Neural Intuition},
+  year = {2025},
+  url = {https://github.com/mateuszgrzyb-pl/searchless-chess},
+  note = {Neural chess engine achieving ~1960 ELO without search}
+}
+```
+
 ## 📄 License
 MIT License
 
 ## 📧 Contact
 
-* LinkedIn: [Mateusz Grzyb](https://www.linkedin.com/in/mateusz--grzyb/)
-* Blog PL: [MateuszGrzyb.pl](https://mateuszgrzyb.pl)
+* **LinkedIn:** [Mateusz Grzyb](https://www.linkedin.com/in/mateusz--grzyb/)
+* **Blog PL:** [MateuszGrzyb.pl](https://mateuszgrzyb.pl)
+* **GitHub:** [mateuszgrzyb-pl](https://github.com/mateuszgrzyb-pl)
