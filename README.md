@@ -276,7 +276,7 @@ pip install -r requirements.txt
 
 If you use this work in your research, please cite:
 ```bibtex
-@software{grzyb2024searchless,
+@software{grzyb2025searchless,
   author = {Grzyb, Mateusz},
   title = {Searchless Chess: Master-Level Chess Through Pure Neural Intuition},
   year = {2025},
