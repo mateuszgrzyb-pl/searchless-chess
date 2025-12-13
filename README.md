@@ -25,12 +25,28 @@ This project demonstrates that neural networks can develop chess intuition witho
 
 No minimax. No alpha-beta pruning. Pure neural intuition.
 
+## 🗺️ The Journey: From an Idea to 1960 ELO
+This project was an independent research sprint conducted over several months, driven by a passion for machine learning and chess. It involved:
+- Over 200 hours of self-funded training on an NVIDIA A100 GPU.
+- A solo engineering effort: from a 5-stage data pipeline to building a custom evaluation framework.
+- Overcoming real-world MLOps challenges, such as checkpointing and resuming multi-day training runs on cloud platforms.
+
+It's a testament to what's possible today for a dedicated individual outside of a large corporate lab.
+
 ## 🔗 Quick Links
 - 📦 [HuggingFace Dataset](https://huggingface.co/datasets/mateuszgrzyb/lichess-stockfish-normalized) - 316M deduplicated positions
 - 🤖 [Pre-trained Models](https://github.com/mateuszgrzyb-pl/searchless-chess/releases) - Download ready-to-use weights
 - 📖 [Model Loading Guide](docs/model_loading_guide.md) - Detailed usage instructions
 - 📓 [Technical Blog Post](#) - Deep dive into methodology (coming soon)
 - 🎮 [Play Against the Bot](#) - Interactive demo (coming soon)
+
+## 🚀 Live Demo: The Bot in Action
+Here, the ViT-Medium model (1960 ELO) solves three puzzles rated between 1900 and 2500 ELO, relying solely on its neural intuition to find the best move.
+
+<p align="center">
+  <img src="docs/images/puzzle_compilation_v1.gif" alt="Chess Bot Demo GIF" width="50%">
+  <p style="text-align:center; font-style: italic;">Figure 1: Pure neural intuition. The ViT-Medium model finds the best move in puzzles rated up to 2564 ELO instantly, with no search algorithm involved.</p>
+</p>
 
 ## 🏆 Key Achievements
 - ✅ **~1960 ELO without search** - pure value-based move selection
@@ -112,8 +128,10 @@ Model strength was estimated using a rigorous puzzle-based evaluation approach:
 
 4. **Validation:** Results plotted to visualize accuracy decay across difficulty spectrum
 
-![ELO Estimation Example](docs/images/elo_estimation_example.png)
-*Figure: ELO estimation via linear regression. The intersection at 50% accuracy yields the estimated playing strength.*
+<p align="center">
+  <img src="docs/images/elo_estimation_example.png" alt="ELO Estimation Example" width="75%">
+  <p style="text-align:center; font-style: italic;">Figure 2: ELO estimation via linear regression. The intersection at 50% accuracy yields the estimated playing strength.</p>
+</p>
 
 **Why Puzzles Are Valid for Search-Free Models:**
 
@@ -139,9 +157,10 @@ Models evaluated on three key dimensions:
 ## 🔬 Key Discoveries
 ### Vision Transformers vs ResNets
 
-![Model Comparison Chart](docs/images/model_comparison.png "Performance vs Parameters: ViT achieves 10x parameter efficiency over ResNet")
-
-*Figure 1: ELO performance vs model size. ViT achieves superior parameter efficiency.*
+<p align="center">
+  <img src="docs/images/model_comparison.png" alt="Model Comparison Chart" width="75%">
+  <p style="text-align:center; font-style: italic;">Figure 3: ELO performance vs model size. ViT achieves superior parameter efficiency.</p>
+</p>
 
 The most surprising finding: **Vision Transformers are dramatically more 
 parameter-efficient than ResNets for chess position evaluation.**
