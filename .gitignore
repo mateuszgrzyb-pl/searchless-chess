@@ -230,3 +230,7 @@ config_*.yaml
 
 # Checkpoints
 checkpoints/
+
+# Media
+*.mov
+*.mp4
