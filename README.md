@@ -45,8 +45,9 @@ Here, the ViT-Medium model (1960 ELO) solves three puzzles rated between 1900 an
 
 <p align="center">
   <img src="docs/images/puzzle_compilation_v1.gif" alt="Chess Bot Demo GIF" width="50%">
-  <p style="text-align:center; font-style: italic;">Figure 1: Pure neural intuition. The ViT-Medium model finds the best move in puzzles rated up to 2564 ELO instantly, with no search algorithm involved.</p>
 </p>
+
+*Figure 1: Pure neural intuition. The ViT-Medium model finds the best move in puzzles rated up to 2564 ELO instantly, with no search algorithm involved.*
 
 ## 🏆 Key Achievements
 - ✅ **~1960 ELO without search** - pure value-based move selection
@@ -130,8 +131,9 @@ Model strength was estimated using a rigorous puzzle-based evaluation approach:
 
 <p align="center">
   <img src="docs/images/elo_estimation_example.png" alt="ELO Estimation Example" width="75%">
-  <p style="text-align:center; font-style: italic;">Figure 2: ELO estimation via linear regression. The intersection at 50% accuracy yields the estimated playing strength.</p>
 </p>
+
+*Figure 2: ELO estimation via linear regression. The intersection at 50% accuracy yields the estimated playing strength.*
 
 **Why Puzzles Are Valid for Search-Free Models:**
 
@@ -159,8 +161,9 @@ Models evaluated on three key dimensions:
 
 <p align="center">
   <img src="docs/images/model_comparison.png" alt="Model Comparison Chart" width="75%">
-  <p style="text-align:center; font-style: italic;">Figure 3: ELO performance vs model size. ViT achieves superior parameter efficiency.</p>
 </p>
+
+*Figure 3: ELO performance vs model size. ViT achieves superior parameter efficiency.*
 
 The most surprising finding: **Vision Transformers are dramatically more 
 parameter-efficient than ResNets for chess position evaluation.**
