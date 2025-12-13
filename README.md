@@ -44,7 +44,7 @@ It's a testament to what's possible today for a dedicated individual outside of 
 Here, the ViT-Medium model (1960 ELO) solves three puzzles rated between 1900 and 2500 ELO, relying solely on its neural intuition to find the best move.
 
 <p align="center">
-  <img src="docs/images/puzzle_compilation_v1.gif" alt="Chess Bot Demo GIF" width="50%">
+  <img src="docs/images/puzzle_compilation_v1.gif" alt="Chess Bot Demo GIF" width="70%">
 </p>
 
 *Figure 1: Pure neural intuition. The ViT-Medium model finds the best move in puzzles rated up to 2564 ELO instantly, with no search algorithm involved.*
