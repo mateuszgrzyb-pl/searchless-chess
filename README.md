@@ -113,7 +113,7 @@ Model strength was estimated using a rigorous puzzle-based evaluation approach:
 1. **Puzzle Solving:** Each model attempts to solve all 1,200 puzzles
    - Model generates best move for current position
    - Success = finding the correct tactical sequence
-   - Partial credit for correct initial moves
+   - No partial credit for correct initial moves!!!
 
 2. **Tier-Level Aggregation:** Success rates calculated per rating tier
    ```
